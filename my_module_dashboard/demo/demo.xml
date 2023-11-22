@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Student Achievement records -->
+        <record id="demo_student_achievement_1" model="student.achievement">
+            <field name="name">John Doe</field>
+            <field name="achievement">Won the Math Olympiad</field>
+            <field name="date">2023-11-21</field>
+        </record>
+        <record id="demo_student_achievement_2" model="student.achievement">
+            <field name="name">Jane Doe</field>
+            <field name="achievement">Top scorer in Physics exam</field>
+            <field name="date">2023-11-22</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_student_achievement_tree" model="ir.ui.view">
+        <field name="name">student.achievement.tree</field>
+        <field name="model">student.achievement</field>
+        <field name="arch" type="xml">
+            <tree string="Student Achievement">
+                <field name="name"/>
+                <field name="achievement"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_student_achievement_form" model="ir.ui.view">
+        <field name="name">student.achievement.form</field>
+        <field name="model">student.achievement</field>
+        <field name="arch" type="xml">
+            <form string="Student Achievement">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="achievement"/>
+                        <field name="date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the list view -->
+    <record id="action_student_achievements" model="ir.actions.act_window">
+        <field name="name">Student Achievements</field>
+        <field name="res_model">student.achievement</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item to access the list view -->
+    <menuitem id="menu_student_achievements" name="Student Achievements" action="action_student_achievements"/>
+</odoo>
