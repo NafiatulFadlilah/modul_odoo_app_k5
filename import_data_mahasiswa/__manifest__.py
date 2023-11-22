@@ -6,6 +6,7 @@
     "depends": ["base"],
     "data": [
         "views/csv_import_view.xml",
+        "views/mahasiswa_view.xml",
         "security/ir.model.access.csv",
     ],
     "installable": True,

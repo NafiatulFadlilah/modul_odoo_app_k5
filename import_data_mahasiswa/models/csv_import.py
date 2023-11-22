@@ -40,6 +40,6 @@ class CsvImport(models.Model):
                 record.write(values)
             else:
                 # Create a new record
-                self.env["model.name"].create(values)
+                self.env["data.tes"].create(values)
         # Change the state to done
         self.state = "done"

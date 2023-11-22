@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_csv_import,csv.import access,model_csv_import,base.group_user,1,1,1,1
+access_data_tes,data.tes access,model_data_tes,base.group_user,1,1,1,1
+access_mahasiswa_data_user,Mahasiswa Data User,model_mahasiswa_data,base.group_user,1,1,1,1
+access_mahasiswa_data_manager,Mahasiswa Data Manager,model_mahasiswa_data,base.group_system,1,1,1,1
