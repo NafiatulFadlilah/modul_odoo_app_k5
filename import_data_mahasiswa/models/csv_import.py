@@ -33,13 +33,13 @@ class CsvImport(models.Model):
             # You can also use the Odoo API methods such as search, write, or unlink
             # Here we assume the first column is the external ID and the rest are the field values
             ext_id = row[0]
-            values = dict(zip(header[1:], row[1:]))
+            values = dict(zip(header[0:], row[0:]))
             record = self.env.ref(ext_id, raise_if_not_found=False)
             if record:
                 # Update the existing record
                 record.write(values)
             else:
                 # Create a new record
-                self.env["data.tes"].create(values)
+                self.env["mahasiswa.data"].create(values)
         # Change the state to done
         self.state = "done"
