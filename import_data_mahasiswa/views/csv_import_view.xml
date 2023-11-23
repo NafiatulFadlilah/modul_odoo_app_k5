@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- Define the menu item for the csv import -->
-        <menuitem id="csv_import_menu" name="CSV Import" sequence="10" action="csv_import_action"/>
-        
-
-        <!-- Define the action for the csv import -->
-        <record id="csv_import_action" model="ir.actions.act_window">
-            <field name="name">CSV Import</field>
-            <field name="res_model">csv.import</field>
-            <field name="view_mode">tree,form</field>
-        </record>
 
         <!-- Define the tree view for the csv import -->
         <record id="csv_import_tree_view" model="ir.ui.view">
@@ -46,5 +36,14 @@
                 </form>
             </field>
         </record>
+        
+        <!-- Define the action for the csv import -->
+        <record id="csv_import_action" model="ir.actions.act_window">
+            <field name="name">CSV Import</field>
+            <field name="res_model">csv.import</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Define the menu item for the csv import -->
+        <menuitem id="csv_import_menu" name="CSV Import" sequence="10" action="csv_import_action"/>
     </data>
 </odoo>
