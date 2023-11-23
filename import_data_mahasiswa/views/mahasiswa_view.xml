@@ -77,13 +77,13 @@
         </record>
         <record id="view_mahasiswa_read_csv" model="ir.ui.view">
             <field name="name">mahasiswa.data.read_csv</field>
-            <field name="model">mahasiswa.data</field>
+            <field name="model">wizard.read.csv</field>
             <field name="arch" type="xml">
                 <form string="Baca Data Mahasiswa dari CSV">
                     <sheet>
                         <group>
                             <!-- tampilkan field file_path dengan widget char -->
-                            <field name="file_csv" widget="binary" string="Lokasi File CSV"/>
+                            <field name="file_path" widget="char" string="Lokasi File CSV"/>
                         </group>
                         <footer>
                             <!-- tampilkan tombol untuk memanggil fungsi read_csv dengan widget button -->
@@ -126,7 +126,7 @@
         </record>
         <record id="action_mahasiswa_read_csv" model="ir.actions.act_window">
             <field name="name">Baca Data Mahasiswa dari CSV</field>
-            <field name="res_model">mahasiswa.data</field>
+            <field name="res_model">wizard.read.csv</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
             <field name="view_id" ref="view_mahasiswa_read_csv"/>

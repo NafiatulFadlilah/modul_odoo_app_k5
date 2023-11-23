@@ -2,7 +2,28 @@
 import csv
 import base64
 from io import StringIO
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
+
+# definisikan class WizardReadCSV yang merupakan models.TransientModel
+class WizardReadCSV(models.TransientModel):
+    # nama tabel di database
+    _name = 'wizard.read.csv'
+    # nama yang ditampilkan di odoo
+    _description = 'Wizard Baca Data Mahasiswa dari CSV'
+
+    # definisikan field file_path yang bertipe Char
+    file_path = fields.Char(string='Lokasi File CSV', required=True)
+
+    # definisikan fungsi untuk membaca data dari file .csv
+    def read_csv(self):
+        # ambil objek dari models mahasiswa.data
+        mahasiswa = self.env['mahasiswa.data']
+        # ambil nilai dari field file_path
+        file_path = self.file_path
+        # panggil fungsi read_csv dari models mahasiswa.data dengan parameter file_path
+        mahasiswa.read_csv(file_path)
+        # kembalikan action untuk menutup wizard
+        return {'type': 'ir.actions.act_window_close'}
 
 # definisikan class Mahasiswa yang merupakan models.Model
 class Mahasiswa(models.Model):
@@ -28,6 +49,7 @@ class Mahasiswa(models.Model):
     @api.model
     def read_csv(self, file_path):
         # buka file .csv dengan mode 'r' (read)
+        print("\nread csv Path File: "+file_path+"\n")
         with open(file_path, 'r') as file:
             # baca file dengan menggunakan csv.reader
             reader = csv.reader(file)
@@ -58,6 +80,7 @@ class Mahasiswa(models.Model):
     @api.model
     def edit_csv(self, file_path):
         # buka file .csv dengan mode 'r' (read)
+        print("\nedit csv Path File: "+file_path+"\n")
         with open(file_path, 'r') as file:
             # baca file dengan menggunakan csv.reader
             reader = csv.reader(file)
@@ -87,6 +110,7 @@ class Mahasiswa(models.Model):
     # definisikan fungsi untuk menambahkan data dari file .csv
     @api.model
     def add_csv(self, file_path):
+        print("\nadd csv Path File: "+file_path+"\n")
         # buka file .csv dengan mode 'r' (read)
         with open(file_path, 'r') as file:
             # baca file dengan menggunakan csv.reader
@@ -120,6 +144,7 @@ class Mahasiswa(models.Model):
     # definisikan fungsi untuk menghasilkan file csv dari data mahasiswa
     @api.depends('nim', 'nama', 'kelas', 'semester', 'ipk', 'status')
     def generate_csv(self):
+        print("\ngenerate csv\n")
         # buat objek StringIO untuk menyimpan data csv
         output = StringIO()
         # buat objek csv.writer untuk menulis data csv
@@ -134,3 +159,17 @@ class Mahasiswa(models.Model):
         csv_data = base64.b64encode(output.getvalue().encode())
         # kembalikan nilai csv_file dengan data csv yang telah diencode
         self.csv_file = csv_data
+
+    def action_mahasiswa_csv(self):
+        # kembalikan action yang sudah didefinisikan di views xml
+        return self.env.ref('import_data_mahasiswa.action_mahasiswa_csv').read()[0]
+    
+    # definisikan fungsi untuk memanggil action untuk membuka view form baru untuk add_csv
+    def action_mahasiswa_add_csv(self):
+        # kembalikan action yang sudah didefinisikan di views xml
+        return self.env.ref('import_data_mahasiswa.action_mahasiswa_add_csv').read()[0]
+    
+    # definisikan fungsi untuk memanggil action untuk membuka wizard untuk read_csv
+    def action_mahasiswa_read_csv(self):
+        # kembalikan action yang sudah didefinisikan di views xml
+        return self.env.ref('import_data_mahasiswa.action_mahasiswa_read_csv').read()[0]
