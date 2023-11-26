@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Define the data for the output rank -->
+    <data>
+        <!-- Define the tree view for the rank model -->
+        <record id="view_rank_tree" model="ir.ui.view">
+            <field name="name">rank.model.tree</field>
+            <field name="model">rank.model</field>
+            <field name="arch" type="xml">
+                <tree string="Student Achievement DSS">
+                    <field name="name"/>
+                    <field name="ratio"/>
+                    <field name="rank"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Define the form view for the rank model -->
+        <record id="view_rank_form" model="ir.ui.view">
+            <field name="name">rank.model.form</field>
+            <field name="model">rank.model</field>
+            <field name="arch" type="xml">
+                <form string="Student Achievement DSS">
+                    <group>
+                        <field name="name"/>
+                        <field name="ratio"/>
+                        <field name="rank"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!-- Define the action for the rank model -->
+        <record id="action_rank" model="ir.actions.act_window">
+            <field name="name">Student Achievement DSS</field>
+            <field name="res_model">rank.model</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Define the menu item for the rank model -->
+        <menuitem id="menu_rank" name="Student Achievement DSS" action="action_rank"/>
+
+        <!-- Define the data for the input csv -->
+        <!-- Define the form view for the wizard_readCsv model -->
+        <record id="view_wizard_readcsv_form" model="ir.ui.view">
+            <field name="name">wizard.readcsv.form</field>
+            <field name="model">wizard.readcsv</field>
+            <field name="arch" type="xml">
+                <form string="Input CSV File">
+                    <group>
+                        <field name="file" filename="filename"/>
+                        <field name="filename" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="display_result" string="Display Result" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <!-- Define the action for the wizard_readCsv model -->
+        <record id="action_wizard_readcsv" model="ir.actions.act_window">
+            <field name="name">Input CSV File</field>
+            <field name="res_model">wizard.readcsv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- Add a button to the tree view of the rank model -->
+        <record id="view_rank_tree_inherited" model="ir.ui.view">
+            <field name="inherit_id" ref="view_rank_tree"/>
+            <field name="model">rank.model</field> <!-- Add this line -->
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <button name="%(action_wizard_readcsv)d" string="Input CSV File" type="action" action="action_read_csv"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- Add a button to the form view of the rank model -->
+        <record id="view_rank_form_inherited" model="ir.ui.view">
+            <field name="inherit_id" ref="view_rank_form"/>
+            <field name="model">rank.model</field> <!-- Add this line -->
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <button name="%(action_wizard_readcsv)d" string="Input CSV File" type="action"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
