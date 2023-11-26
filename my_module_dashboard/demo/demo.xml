@@ -4,13 +4,19 @@
         <!-- Student Achievement records -->
         <record id="demo_student_achievement_1" model="student.achievement">
             <field name="name">John Doe</field>
-            <field name="achievement">Won the Math Olympiad</field>
-            <field name="date">2023-11-21</field>
+            <field name="nlratio">2.134</field>
+            <field name="rank">1</field>
+            <!-- <field name="achievement1">Won the Math Olympiad</field>
+            <field name="achievement2">Won the Science Olympiad</field>
+            <field name="date">2023-11-21</field> -->
         </record>
         <record id="demo_student_achievement_2" model="student.achievement">
             <field name="name">Jane Doe</field>
-            <field name="achievement">Top scorer in Physics exam</field>
-            <field name="date">2023-11-22</field>
+             <field name="nlratio">1.714</field>
+            <field name="rank">2</field>
+            <!-- <field name="achievement1">Won the Math Olympiad</field>
+            <field name="achievement2">Won the Science Olympiad</field>
+            <field name="date">2023-11-21</field> -->
         </record>
     </data>
 </odoo>

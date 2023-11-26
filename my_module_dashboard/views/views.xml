@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
             <tree string="Student Achievement">
                 <field name="name"/>
-                <field name="achievement"/>
-                <field name="date"/>
+                <field name="nlratio"/>
+                <field name="rank"/>
             </tree>
         </field>
     </record>
@@ -20,10 +20,13 @@
         <field name="arch" type="xml">
             <form string="Student Achievement">
                 <sheet>
+                    <div class="alert alert-info" style="margin-bottom:20px;">
+                        <strong>Form Student Achievement </strong>
+                    </div>
                     <group>
                         <field name="name"/>
-                        <field name="achievement"/>
-                        <field name="date"/>
+                        <field name="nlratio"/>
+                        <field name="rank"/>
                     </group>
                 </sheet>
             </form>
@@ -32,7 +35,7 @@
 
     <!-- Action to open the list view -->
     <record id="action_student_achievements" model="ir.actions.act_window">
-        <field name="name">Student Achievements</field>
+        <field name="name">Student Achievements Dashboard</field>
         <field name="res_model">student.achievement</field>
         <field name="view_mode">tree,form</field>
     </record>

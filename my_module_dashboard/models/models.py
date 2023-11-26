@@ -5,5 +5,9 @@ class StudentAchievement(models.Model):
     _description = 'Student Achievement'
 
     name = fields.Char(string='Student Name', required=True)
-    achievement = fields.Text(string='Achievement')
-    date = fields.Date(string='Date')
+    #achievement1 = fields.Text(string='Achievement1')
+    #achievement2 = fields.Text(string='Achievement2')
+    nlratio = fields.Float(string='Nilai Ratio')
+    rank = fields.Integer(string='Peringkat')
+    #date = fields.Date(string='Date')
+    
