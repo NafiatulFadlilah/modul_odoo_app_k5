@@ -1,10 +1,12 @@
 # Import the odoo models module
 from odoo import models, fields, api
 # Import the numpy and pandas libraries
-# import numpy as np
-# import pandas as pd
+import numpy as np
+import pandas as pd
 # Import the base64 library
 import base64
+import logging
+_logger = logging.getLogger(__name__)
 
 # Define the class for the wizard_readCsv model
 class Wizard_readCsv(models.TransientModel):
@@ -29,24 +31,56 @@ class Wizard_readCsv(models.TransientModel):
         # Return the dataframe
         return df
 
+    # Define a method to get all data
+    @api.model
+    def get_data_mhs(self):
+        _logger.info("Get Data Mahasiswa...")
+        mhs_model = "mahasiswa.dataakademik"
+        return self.env[mhs_model].search([])
+
     # Define a method to get the criteria and alternatives from the dataframe
     @api.model
     def get_criteria_alternatives(self):
+        _logger.info("Get Criteria & Alternatives...")
+        datamhs = self.get_data_mhs()
+        data_list = []
+        for row in datamhs:
+            data_list.append({
+                'nim': row.nim,
+                'nama': row.nama,
+                'prestasi': row.prestasi,
+                'kompen': row.kompen,
+                **row.nilai
+            })
+
+        # Create the DataFrame
+        datamhs_df = pd.DataFrame(data_list)
         # Define the criteria and alternatives
-        criteria = ["Nilai Prestasi", "Manajemen Proyek", "Keamanan Informasi", "E-Business", "Pemrograman Platform Bergerak (Mobile)", "Sistem Pendukung Keputusan", "Pengolahan Citra Digital", "Proyek Tingkat III", "Alpaku"]
-        alternatives = df["Nama"]
+        # criteria = ["Nilai Prestasi", "Manajemen Proyek", "Keamanan Informasi", "E-Business", "Pemrograman Platform Bergerak (Mobile)", "Sistem Pendukung Keputusan", "Pengolahan Citra Digital", "Proyek Tingkat III", "Alpaku"]
+        # alternatives = df["Nama"]
+        matkul = list(datamhs[0].nilai.keys())
+        criteria = ["prestasi"]
+        criteria.extend(matkul)
+        criteria.append("kompen")
+        alternatives = datamhs_df["nama"]
 
         # Extract the decision matrix from the dataframe
-        matrix = df[criteria].to_numpy()
+        # matrix = df[criteria].to_numpy()
+        matrix = datamhs_df[criteria].to_numpy()
 
         # Return the criteria, alternatives, and matrix
         return criteria, alternatives, matrix
 
     # Define a method to calculate the weights using ROC method
     @api.model
-    def calculate_weights(self):
+    def calculate_weights(self,length):
+        _logger.info("Calculate Weigth...")
+
         # Define the rank of the criteria
-        rank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # rank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        rank = []
+        for x in range(length):
+            rank.append(x+1)
         # Calculate the length of the rank list
         n = len(rank)
         # Initialize an empty list for the weights
@@ -65,20 +99,22 @@ class Wizard_readCsv(models.TransientModel):
     # Define a method to normalize the matrix using vector normalization
     @api.model
     def normalize_matrix(self):
+        _logger.info("Normalize Matx...")
         # Get the matrix from the get_criteria_alternatives method
         criteria, alternatives, matrix = self.get_criteria_alternatives()
         # Normalize the matrix using vector normalization
         norm_matrix = matrix / np.sqrt(np.sum(matrix ** 2, axis=0))
         # Return the normalized matrix
-        return norm_matrix
+        return norm_matrix, criteria
 
     # Define a method to calculate the weighted normalized matrix
     @api.model
     def calculate_weighted_matrix(self):
+        _logger.info("Calculate Weigthed Matx...")
         # Get the normalized matrix from the normalize_matrix method
-        norm_matrix = self.normalize_matrix()
+        norm_matrix, criteria = self.normalize_matrix()
         # Get the weights from the calculate_weights method
-        weights = self.calculate_weights()
+        weights = self.calculate_weights(len(criteria))
         # Calculate the weighted normalized matrix
         weighted_matrix = norm_matrix * weights
         # Return the weighted normalized matrix
@@ -87,6 +123,7 @@ class Wizard_readCsv(models.TransientModel):
     # Define a method to separate the benefit and cost criteria from the weighted matrix
     @api.model
     def separate_benefit_cost(self):
+        _logger.info("Benefit-Cost...")
         # Get the weighted normalized matrix from the calculate_weighted_matrix method
         weighted_matrix = self.calculate_weighted_matrix()
         # Separate the benefit and cost criteria from the weighted matrix
@@ -98,6 +135,7 @@ class Wizard_readCsv(models.TransientModel):
     # Define a method to calculate the MOORA ratio for each alternative
     @api.model
     def calculate_ratio(self):
+        _logger.info("Calculate Ratio...")
         # Get the benefit and cost criteria from the separate_benefit_cost method
         benefit_criteria, cost_criteria = self.separate_benefit_cost()
         # Calculate the MOORA ratio for each alternative
@@ -108,6 +146,7 @@ class Wizard_readCsv(models.TransientModel):
     # Define a method to rank the alternatives based on the MOORA ratio
     @api.model
     def rank_alternatives(self):
+        _logger.info("Ranking...")
         # Get the alternatives and ratio from the get_criteria_alternatives and calculate_ratio methods
         criteria, alternatives, matrix = self.get_criteria_alternatives()
         ratio = self.calculate_ratio()
@@ -128,6 +167,20 @@ class Wizard_readCsv(models.TransientModel):
         # Print the result
         print("The ranking of the alternatives based on the MOORA method are:")
         print(rank_df)
+
+    def dss_tes(self):
+        _logger.info("ok")
+        rank_df = self.rank_alternatives()
+        # _logger.info(rank_df)
+        rankmodel = self.env['rank.model']
+        # panggil fungsi create dari models rank.model
+        rankmodel.add_df(rank_df)
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'rank.model',
+            'view_mode': 'tree,form',
+            'view_type': 'tree'
+        }
 
 # Define the class for the rank_model model
 class Rank_model(models.Model):
@@ -159,4 +212,24 @@ class Rank_model(models.Model):
             }
             # Create a record with the dictionary
             cls.create(vals)
+
+    @api.model
+    def add_df(self, rank_df):
+        # Loop through each row of the dataframe
+        for index, row in rank_df.iterrows():
+            # Create a dictionary with the field values
+            vals = {
+                "name": row["Alternative"],
+                "ratio": row["Ratio"],
+                "rank": index + 1
+            }
+            # Create a record with the dictionary
+            self.create(vals)
+
+    def action_rank(self):
+        # kembalikan action yang sudah didefinisikan di views xml
+        return self.env.ref('import_data_mahasiswa.action_rank').read()[0]
+    def action_dss_tes(self):
+        # kembalikan action yang sudah didefinisikan di views xml
+        return self.env.ref('dss_student_achievement.action_dss_tes').read()[0]
 

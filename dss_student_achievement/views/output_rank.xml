@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <tree string="Student Achievement DSS">
                     <field name="name"/>
-                    <field name="ratio"/>
+                    <field name="ratio" digits="[2,30]"/>
                     <field name="rank"/>
                 </tree>
             </field>
@@ -22,9 +22,25 @@
                 <form string="Student Achievement DSS">
                     <group>
                         <field name="name"/>
-                        <field name="ratio"/>
+                        <field name="ratio" digits="[2,30]"/>
                         <field name="rank"/>
                     </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_dss_tes" model="ir.ui.view">
+            <field name="name">rank.model.dss_tes</field>
+            <field name="model">wizard.readcsv</field>
+            <field name="arch" type="xml">
+                <form string="Testing DSS fun">
+                    <sheet>
+                        <header>
+                            <button name="dss_tes" string="Baca Data" type="object" class="btn-primary"/>
+                        </header>
+                        <footer>
+                            <button string="Close" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -34,8 +50,24 @@
             <field name="res_model">rank.model</field>
             <field name="view_mode">tree,form</field>
         </record>
+        <record id="action_dss_tes" model="ir.actions.act_window">
+            <field name="name">Tes DSS</field>
+            <field name="res_model">wizard.readcsv</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_dss_tes"/>
+        </record>
+        <record id="ir_action_dss_tes" model="ir.actions.server">
+            <field name="name">Tes DSS</field>
+            <field name="model_id" ref="model_rank_model"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_dss_tes()</field>
+            <field name="binding_model_id" ref="model_rank_model"/>
+            <field name="binding_type">action</field>
+        </record>
         <!-- Define the menu item for the rank model -->
         <menuitem id="menu_rank" name="Student Achievement DSS" action="action_rank"/>
+        <menuitem id="menu_dss_tes" name="Tes DSS" action="action_dss_tes" parent="menu_rank"/>
 
         <!-- Define the data for the input csv -->
         <!-- Define the form view for the wizard_readCsv model -->
@@ -63,15 +95,15 @@
             <field name="target">new</field>
         </record>
         <!-- Add a button to the tree view of the rank model -->
-        <record id="view_rank_tree_inherited" model="ir.ui.view">
+        <!-- <record id="view_rank_tree_inherited" model="ir.ui.view">
             <field name="inherit_id" ref="view_rank_tree"/>
-            <field name="model">rank.model</field> <!-- Add this line -->
+            <field name="model">rank.model</field>
             <field name="arch" type="xml">
                 <xpath expr="//tree" position="inside">
-                    <button name="%(action_wizard_readcsv)d" string="Input CSV File" type="action" action="action_read_csv"/>
+                    <button name="%(action_wizard_readcsv)d" string="Input CSV File" type="action"/>
                 </xpath>
             </field>
-        </record>
+        </record> -->
         <!-- Add a button to the form view of the rank model -->
         <record id="view_rank_form_inherited" model="ir.ui.view">
             <field name="inherit_id" ref="view_rank_form"/>
@@ -82,6 +114,17 @@
                 </xpath>
             </field>
         </record>
+        <!-- <record id="view_dss_tree_inherit" model="ir.ui.view">
+            <field name="inherit_id" ref="view_rank_tree"/>
+            <field name="model">rank.model</field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/header" position="inside">
+                    <header>
+                        <button name="%(actions_tes_dss)d" string="Tes DSS" type="action" class="oe_highlight"/>
+                    </header>
+                </xpath>
+            </field>
+        </record> -->
     </data>
 </odoo>
 
