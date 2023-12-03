@@ -28,14 +28,14 @@
                 </form>
             </field>
         </record>
-        <record id="view_dss_tes" model="ir.ui.view">
-            <field name="name">rank.model.dss_tes</field>
+        <record id="view_hitung_dss" model="ir.ui.view">
+            <field name="name">rank.model.hitung_dss</field>
             <field name="model">wizard.readcsv</field>
             <field name="arch" type="xml">
-                <form string="Testing DSS fun">
+                <form string="Hitung DSS fun">
                     <sheet>
                         <header>
-                            <button name="dss_tes" string="Baca Data" type="object" class="btn-primary"/>
+                            <button name="hitung_dss" string="Hitung DSS" type="object" class="btn-primary"/>
                         </header>
                         <footer>
                             <button string="Close" class="btn-secondary" special="cancel"/>
@@ -50,24 +50,24 @@
             <field name="res_model">rank.model</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <record id="action_dss_tes" model="ir.actions.act_window">
-            <field name="name">Tes DSS</field>
+        <record id="action_hitung_dss" model="ir.actions.act_window">
+            <field name="name">Hitung DSS</field>
             <field name="res_model">wizard.readcsv</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="view_dss_tes"/>
+            <field name="view_id" ref="view_hitung_dss"/>
         </record>
-        <record id="ir_action_dss_tes" model="ir.actions.server">
-            <field name="name">Tes DSS</field>
+        <record id="ir_action_hitung_dss" model="ir.actions.server">
+            <field name="name">Hitung DSS</field>
             <field name="model_id" ref="model_rank_model"/>
             <field name="state">code</field>
-            <field name="code">action = model.action_dss_tes()</field>
+            <field name="code">action = model.action_hitung_dss()</field>
             <field name="binding_model_id" ref="model_rank_model"/>
             <field name="binding_type">action</field>
         </record>
         <!-- Define the menu item for the rank model -->
         <menuitem id="menu_rank" name="Student Achievement DSS" action="action_rank"/>
-        <menuitem id="menu_dss_tes" name="Tes DSS" action="action_dss_tes" parent="menu_rank"/>
+        <menuitem id="menu_hitung_dss" name="Hitung DSS" action="action_hitung_dss" parent="menu_rank"/>
 
         <!-- Define the data for the input csv -->
         <!-- Define the form view for the wizard_readCsv model -->
@@ -125,6 +125,41 @@
                 </xpath>
             </field>
         </record> -->
+        <record id="view_rank_kanban" model="ir.ui.view"> 
+            <field name="name">rank.stage.kanban</field> 
+            <field name="model">rank.stage</field> 
+            <field name="arch" type="xml"> 
+                <kanban default_group_by="group_id" default_order="sequence asc" class="o_kanban_small_column" quick_create="false" options="{'drag_drop': True, 'record_editable': false, 'readonly_fields': ['criteria','group_id']}"> 
+                    <field name="sequence"/> 
+                    <field name="criteria"/> 
+                    <!-- <field name="rank"/>  -->
+                    <!-- <field name="stage_id"/>  -->
+                    <templates> 
+                        <t t-name="kanban-box"> 
+                            <div t-attf-class="oe_kanban_global_click"> 
+                                <div class="oe_kanban_details"> 
+                                    <strong class="o_kanban_record_title"> 
+                                        <field name="sequence"/> 
+                                    </strong> 
+                                    <div> 
+                                        <field name="criteria"/> 
+                                    </div> 
+                                    <!-- <div> 
+                                        <field name="rank"/> 
+                                    </div>  -->
+                                </div> 
+                            </div> 
+                        </t> 
+                    </templates> 
+                </kanban> 
+            </field> 
+        </record>
+        <record id="action_stage_rank" model="ir.actions.act_window"> 
+            <field name="name">Rank DSS</field> 
+            <field name="res_model">rank.stage</field> 
+            <field name="view_mode">kanban</field> 
+        </record>
+        <menuitem id="menu_stage_rank" name="Rank DSS" action="action_stage_rank" parent="menu_rank"/>
     </data>
 </odoo>
 

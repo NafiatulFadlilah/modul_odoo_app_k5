@@ -48,8 +48,8 @@ class Wizard_readCsv(models.TransientModel):
             data_list.append({
                 'nim': row.nim,
                 'nama': row.nama,
-                'prestasi': row.prestasi,
-                'kompen': row.kompen,
+                'Prestasi': row.prestasi,
+                'Kompen': row.kompen,
                 **row.nilai
             })
 
@@ -58,11 +58,14 @@ class Wizard_readCsv(models.TransientModel):
         # Define the criteria and alternatives
         # criteria = ["Nilai Prestasi", "Manajemen Proyek", "Keamanan Informasi", "E-Business", "Pemrograman Platform Bergerak (Mobile)", "Sistem Pendukung Keputusan", "Pengolahan Citra Digital", "Proyek Tingkat III", "Alpaku"]
         # alternatives = df["Nama"]
-        matkul = list(datamhs[0].nilai.keys())
-        criteria = ["prestasi"]
-        criteria.extend(matkul)
-        criteria.append("kompen")
-        alternatives = datamhs_df["nama"]
+        # matkul = list(datamhs[0].nilai.keys())
+        # criteria = ["prestasi"]
+        # criteria.extend(matkul)
+        # criteria.append("kompen")
+        criteria = []
+        for row in self.env['rank.stage'].search([], order='sequence asc'):
+            criteria.append(row.criteria)
+        alternatives = datamhs_df["nim"]
 
         # Extract the decision matrix from the dataframe
         # matrix = df[criteria].to_numpy()
@@ -168,13 +171,13 @@ class Wizard_readCsv(models.TransientModel):
         print("The ranking of the alternatives based on the MOORA method are:")
         print(rank_df)
 
-    def dss_tes(self):
+    def hitung_dss(self):
         _logger.info("ok")
         rank_df = self.rank_alternatives()
         # _logger.info(rank_df)
         rankmodel = self.env['rank.model']
         # panggil fungsi create dari models rank.model
-        rankmodel.add_df(rank_df)
+        rankmodel.set_df(rank_df)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'rank.model',
@@ -188,14 +191,17 @@ class Rank_model(models.Model):
     _name = "rank.model"
     # Define the description of the model
     _description = "Model to store the ranking result"
+    _order = "rank"
 
     # Define the fields for the model
     # The name field will store the name of the alternative
+    nim = fields.Char(string="NIM", required=True)
     name = fields.Char(string="Name", required=True)
     # The ratio field will store the MOORA ratio of the alternative
     ratio = fields.Float(string="Ratio", required=True)
     # The rank field will store the rank of the alternative
     rank = fields.Integer(string="Rank", required=True)
+    # stage_id = fields.Integer(string="Stage")
 
     # Define a method to create records from the rank_df dataframe
     @classmethod
@@ -206,7 +212,8 @@ class Rank_model(models.Model):
         for index, row in rank_df.iterrows():
             # Create a dictionary with the field values
             vals = {
-                "name": row["Alternative"],
+                "nim": row["Alternative"],
+                "name": self.env['mahasiswa.dataakademik'].search_read([('nim', '=', row["Alternative"])])['nama'],
                 "ratio": row["Ratio"],
                 "rank": index + 1
             }
@@ -214,22 +221,32 @@ class Rank_model(models.Model):
             cls.create(vals)
 
     @api.model
-    def add_df(self, rank_df):
+    def set_df(self, rank_df):
         # Loop through each row of the dataframe
         for index, row in rank_df.iterrows():
             # Create a dictionary with the field values
-            vals = {
-                "name": row["Alternative"],
-                "ratio": row["Ratio"],
-                "rank": index + 1
-            }
-            # Create a record with the dictionary
-            self.create(vals)
+            record = self.search([('nim', '=', row["Alternative"])])
+            if record:
+                vals = {
+                    "ratio": row["Ratio"],
+                    "rank": index + 1
+                }
+                # edit a record with the dictionary
+                record.write(vals)
+            else:
+                vals = {
+                    "nim": row["Alternative"],
+                    "name": self.env['mahasiswa.dataakademik'].search([('nim', '=', row["Alternative"])]).nama,
+                    "ratio": row["Ratio"],
+                    "rank": index + 1
+                }
+                # Create a record with the dictionary
+                self.create(vals)
 
     def action_rank(self):
         # kembalikan action yang sudah didefinisikan di views xml
         return self.env.ref('import_data_mahasiswa.action_rank').read()[0]
-    def action_dss_tes(self):
+    def action_hitung_dss(self):
         # kembalikan action yang sudah didefinisikan di views xml
-        return self.env.ref('dss_student_achievement.action_dss_tes').read()[0]
+        return self.env.ref('dss_student_achievement.action_hitung_dss').read()[0]
 

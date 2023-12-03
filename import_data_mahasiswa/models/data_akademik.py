@@ -60,7 +60,7 @@ class DataAkademik(models.Model):
             nim = row[0]
             nama = row[1]
             nilai = {}
-            for n in range(3,len(header)-2):
+            for n in range(2,len(header)-2):
                 nilai[header[n]] = float(row[n])
             prestasi = 1 #sementara 1
             alpaku = int(row[len(row)-1])

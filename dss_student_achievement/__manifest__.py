@@ -8,6 +8,7 @@
     "data": [
        "views/output_rank.xml",
        "security/ir.model.access.csv",
+       "demo/demo.xml",
     ],
     "installable": True,
     "application": False,
