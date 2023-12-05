@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 class StudentAchievement(models.Model):
     _name = 'student.achievement'
@@ -10,4 +10,17 @@ class StudentAchievement(models.Model):
     nlratio = fields.Float(string='Nilai Ratio')
     rank = fields.Integer(string='Peringkat')
     #date = fields.Date(string='Date')
-    
+    @api.model
+    def _write_records(self):
+        rank_model = self.env['rank.model'].search([], limit=5)
+        for record in rank_model:
+            self.create({
+                'name': record.name,
+                'nlratio': record.ratio,
+                'rank': record.rank
+            })
+
+    @api.model
+    def _register_hook(self):
+        super(StudentAchievement, self)._register_hook()
+        self._write_records()
