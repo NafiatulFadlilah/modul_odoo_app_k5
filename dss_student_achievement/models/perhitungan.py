@@ -91,7 +91,7 @@ class Wizard_readCsv(models.TransientModel):
         # Loop through each value in the rank list
         for i in rank:
             # Calculate the weight for each value
-            w = sum([1 / (n - j + 1) for j in range(i, n + 1)]) / n
+            w = sum([1 / j for j in range(i, n + 1)]) / n
             # Append the weight to the list
             weights.append(w)
         # Convert the list to a numpy array
