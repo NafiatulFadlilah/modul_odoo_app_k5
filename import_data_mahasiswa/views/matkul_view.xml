@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="model_matakuliah_tree_view" model="ir.ui.view">
+        <field name="name">mahasiswa.data.matkul.tree</field>
+        <field name="model">mahasiswa.data.matkul</field>
+        <field name="arch" type="xml">
+            <tree string="Matakuliah">
+                <field name="kode"/>
+                <field name="matkul"/>
+                <field name="sks"/>
+                <field name="jam"/>
+            </tree>
+        </field>
+    </record>
+    <record id="model_matakuliah_form_view" model="ir.ui.view">
+        <field name="name">mahasiswa.data.matkul.form</field>
+        <field name="model">mahasiswa.data.matkul</field>
+        <field name="arch" type="xml">
+            <form string="Matakuliah">
+                <sheet>
+                    <group>
+                        <field name="kode"/>
+                        <field name="nama"/>
+                        <field name="sks"/>
+                        <field name="jam"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_matkul_akademik" model="ir.actions.act_window">
+        <field name="name">Data Mata Kuliah Akademik</field>
+        <field name="res_model">mahasiswa.data.matkul</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_matkul_akademik" name="Mata Kuliah Akademik" action="action_matkul_akademik" parent="menu_akademik"/>
+</odoo>
