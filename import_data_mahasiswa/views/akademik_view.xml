@@ -81,6 +81,15 @@
 
         <!-- definisikan menu untuk mengakses action -->
         <menuitem id="menu_akademik" name="Data Akademik Mahasiswa" action="action_akademik"/>
-        <menuitem id="menu_read_csv_akademik" name="Read CSV Akademik Mahasiswa" action="action_akademik_read_csv" parent="menu_akademik"/>
     </data>
+    <record id="akademik_tree_inherit_js_class" model="ir.ui.view">
+        <field name="name">mahasiswa.dataakademik.tree.inherit</field>
+        <field name="model">mahasiswa.dataakademik</field>
+        <field name="inherit_id" ref="import_data_mahasiswa.view_akademik_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">custom_button</attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>
