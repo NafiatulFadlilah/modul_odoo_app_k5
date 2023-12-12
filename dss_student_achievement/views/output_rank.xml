@@ -8,6 +8,7 @@
             <field name="model">rank.model</field>
             <field name="arch" type="xml">
                 <tree string="Student Achievement DSS">
+                    <field name="nim"/>
                     <field name="name"/>
                     <field name="ratio" digits="[2,30]"/>
                     <field name="rank"/>
@@ -21,6 +22,7 @@
             <field name="arch" type="xml">
                 <form string="Student Achievement DSS">
                     <group>
+                        <field name="nim"/>
                         <field name="name"/>
                         <field name="ratio" digits="[2,30]"/>
                         <field name="rank"/>
@@ -162,4 +164,3 @@
         <menuitem id="menu_stage_rank" name="Rank DSS" action="action_stage_rank" parent="menu_rank"/>
     </data>
 </odoo>
-
