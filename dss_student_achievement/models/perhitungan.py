@@ -45,13 +45,16 @@ class Wizard_readCsv(models.TransientModel):
         datamhs = self.get_data_mhs()
         data_list = []
         for row in datamhs:
-            data_list.append({
-                'nim': row.nim,
-                'nama': row.nama,
-                'Prestasi': row.prestasi,
-                'Kompen': row.kompen,
-                **row.nilai
-            })
+            if any(elem['nim'] == row.nim for elem in data_list):
+                print("nope")
+            else:
+                data_list.append({
+                    'nim': row.nim,
+                    'nama': row.nama,
+                    'Prestasi': row.prestasi,
+                    'Kompen': row.kompen,
+                    **row.nilai
+                })
 
         # Create the DataFrame
         datamhs_df = pd.DataFrame(data_list)
@@ -203,23 +206,6 @@ class Rank_model(models.Model):
     rank = fields.Integer(string="Rank", required=True)
     # stage_id = fields.Integer(string="Stage")
 
-    # Define a method to create records from the rank_df dataframe
-    @classmethod
-    def create_from_df(cls, rank_df):
-        # Ensure that only one record is created
-        self.ensure_one()
-        # Loop through each row of the dataframe
-        for index, row in rank_df.iterrows():
-            # Create a dictionary with the field values
-            vals = {
-                "nim": row["Alternative"],
-                "name": self.env['mahasiswa.dataakademik'].search_read([('nim', '=', row["Alternative"])])['nama'],
-                "ratio": row["Ratio"],
-                "rank": index + 1
-            }
-            # Create a record with the dictionary
-            cls.create(vals)
-
     @api.model
     def set_df(self, rank_df):
         # Loop through each row of the dataframe
@@ -236,7 +222,7 @@ class Rank_model(models.Model):
             else:
                 vals = {
                     "nim": row["Alternative"],
-                    "name": self.env['mahasiswa.dataakademik'].search([('nim', '=', row["Alternative"])]).nama,
+                    "name": self.env['mahasiswa.data'].search([('nim', '=', row["Alternative"])]).nama,
                     "ratio": row["Ratio"],
                     "rank": index + 1
                 }
