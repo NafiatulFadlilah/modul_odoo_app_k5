@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_kanban_my_model" model="ir.ui.view">
+    <record id="view_kanban_x_my_model" model="ir.ui.view">
         <field name="name">x_my_model.kanban</field>
         <field name="model">x_my_model</field>
         <field name="arch" type="xml">
@@ -52,6 +52,7 @@
                                     </tr>
                                 </table>
                             </div>
+                            <button type="object" name="print_report" string="Print Report"/>
                         </div>
                     </t>
                 </templates>

@@ -9,6 +9,8 @@
     """,
     'data': [
         'views/views.xml',
+        'report/report.xml',
+        'report/my_model_report.xml'
     ],
     
     "installable": True,

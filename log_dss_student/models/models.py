@@ -14,3 +14,6 @@ class MyModel(models.Model):
     value4 = fields.Integer(string='Value 4')
     name5 = fields.Char(string='Name 5')
     value5 = fields.Integer(string='Value 5')
+    
+    def print_report(self):
+        return self.env.ref('log_dss_student.x_my_model_report').report_action(self)
