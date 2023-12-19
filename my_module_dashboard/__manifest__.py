@@ -14,6 +14,16 @@
                     """,
     'author': 'Khosyi Nasywa Imanda',
     'depends': ['base'],
+
+    'assets': {
+        'web.assets_backend': [
+            'my_module_dashboard/static/src/xml/refresh_button.xml',
+            'my_module_dashboard/static/src/js/refresh_button.js',
+            # 'import_data_mahasiswa/static/src/js/kanban_button.js',
+            # 'import_data_mahasiswa/static/src/xml/kanban_button.xml',
+        ],
+    },
+
     'data': [
         'security/security.xml',  # Tambahkan baris ini
         'security/ir.model.access.csv',
