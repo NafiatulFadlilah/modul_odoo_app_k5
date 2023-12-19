@@ -15,9 +15,11 @@
     },
     "data": [
         # "views/csv_import_view.xml",
-        # "views/mahasiswa_view.xml",
         "views/akademik_view.xml",
+        "views/mahasiswa_view.xml",
+        "views/matkul_view.xml",
         "security/ir.model.access.csv",
+        "demo/demo.xml"
     ],
     "installable": True,
     "application": False,

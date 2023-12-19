@@ -1,14 +1,14 @@
 # import library yang dibutuhkan
 import csv
 import base64
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api
 
 # definisikan class WizardReadCSV yang merupakan models.TransientModel
-class WizardReadCSVMatkul(models.TransientModel):
+class WizardDataMahasiswaCSV(models.TransientModel):
     # nama tabel di database
-    _name = 'wizard.readcsv.matkul'
+    _name = 'wizard.datamahasiswa'
     # nama yang ditampilkan di odoo
-    _description = 'Wizard Baca Data Akademik Mahasiswa dari CSV'
+    _description = 'Wizard Baca Data Mahasiswa dari CSV'
 
     # definisikan field file_path yang bertipe Char
     file_csv = fields.Binary(string='File CSV', required=True)
@@ -16,31 +16,31 @@ class WizardReadCSVMatkul(models.TransientModel):
     # definisikan fungsi untuk membaca data dari file .csv
     def read_csv(self):
         # ambil objek dari models mahasiswa.data
-        matkulmod = self.env['mahasiswa.data.matkul']
+        mhs = self.env['mahasiswa.data']
         # ambil nilai dari field file_path
         file_csv = self.file_csv
-        # panggil fungsi read_csv dari models dengan parameter file_path
-        matkulmod.read_csv(file_csv)
+        # panggil fungsi read_csv dari models mahasiswa.data dengan parameter file_path
+        mhs.read_csv(file_csv)
         # kembalikan action untuk menutup wizard
         return {
             'type': 'ir.actions.act_window',
-            'res_model': 'mahasiswa.data.matkul',
+            'res_model': 'mahasiswa.data',
             'view_mode': 'tree,form',
-            'view_type': 'tree'
+            'view_type': 'form'
         }
 
 # definisikan class Mahasiswa yang merupakan models.Model
-class DataMatkul(models.Model):
+class DataMahasiswa(models.Model):
     # nama tabel di database
-    _name = 'mahasiswa.data.matkul'
+    _name = 'mahasiswa.data'
     # nama yang ditampilkan di odoo
-    _description = 'Data Mata Kuliah Akademik'
+    _description = 'Data Mahasiswa'
 
     # definisikan field-field yang ada di tabel
-    kode = fields.Char(string='Kode', required=True)
-    matkul = fields.Char(string='Mata Kuliah', required=True)
-    sks = fields.Integer(string='SKS', required=True)
-    jam = fields.Integer(string='Jam', required=True)
+    nim = fields.Char(string='NIM', required=True)
+    nama = fields.Char(string='Nama', required=True)
+    prestasi = fields.Integer(string='Total Prestasi', required=True)
+    kompen = fields.Integer(string='Total Kompen', required=True)
 
     # definisikan fungsi untuk membaca data dari file .csv
     @api.model
@@ -53,32 +53,38 @@ class DataMatkul(models.Model):
         # iterasi setiap baris di file
         for row in reader:
             # ambil data dari setiap kolom
-            kode = row[0]
-            matkul = row[1]
-            sks = int(row[2]) #sementara 1
-            jam = int(row[3])
+            nim = row[0]
+            nama = row[1]
+            prestasi = 1 #sementara 1
+            alpaku = int(row[len(row)-1])
             # buat record baru di tabel dengan data yang dibaca
-            record = self.search([('kode', '=', kode)])
+            record = self.search([('nim', '=', nim)])
             # jika record tidak ditemukan, buat record baru dengan data yang dibaca
             if not record:
                 self.create({
-                    'kode': kode,
-                    'matkul': matkul,
-                    'sks': sks,
-                    'jam': jam,
+                    'nim': nim,
+                    'nama': nama,
+                    'prestasi': prestasi,
+                    'kompen': alpaku,
                 })
             else:    
                 record.write({
-                    'matkul': matkul,
-                    'sks': sks,
-                    'jam': jam,
+                    'nama': nama,
+                    'prestasi': prestasi,
+                    'kompen': alpaku,
                 })
 
-    def action_matkul_akademik(self):
+    # @api.depends('nilai')
+    # def _viewnilai(self):
+    #     self.nilai_view = False
+    #     for item in self:
+    #         item.nilai_view = str(item.nilai) + "\n" + item.nama
+
+    def action_mahasiswa(self):
         # kembalikan action yang sudah didefinisikan di views xml
-        return self.env.ref('import_data_mahasiswa.action_matkul_akademik').read()[0]
+        return self.env.ref('import_data_mahasiswa.action_mahasiswa').read()[0]
     
     # definisikan fungsi untuk memanggil action untuk membuka wizard untuk read_csv
-    def action_matkul_read_csv(self):
+    def action_mahasiswa_read_csv(self):
         # kembalikan action yang sudah didefinisikan di views xml
-        return self.env.ref('import_data_mahasiswa.action_matkul_read_csv').read()[0]
+        return self.env.ref('import_data_mahasiswa.action_mahasiswa_read_csv').read()[0]
