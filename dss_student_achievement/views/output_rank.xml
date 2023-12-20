@@ -131,7 +131,7 @@
             <field name="name">rank.stage.kanban</field> 
             <field name="model">rank.stage</field> 
             <field name="arch" type="xml"> 
-                <kanban default_group_by="group_id" default_order="group_id asc" class="o_kanban_small_column" quick_create="false" options="{'drag_drop': True, 'record_editable': false, 'readonly_fields': ['criteria','group_id']}"> 
+                <kanban default_group_by="group_id" default_order="sequence asc" class="o_kanban_small_column" quick_create="false" options="{'drag_drop': True, 'record_editable': false, 'readonly_fields': ['criteria','group_id']}"> 
                     <field name="sequence"/> 
                     <field name="criteria"/> 
                     <!-- <field name="rank"/>  -->

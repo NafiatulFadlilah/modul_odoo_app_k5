@@ -228,6 +228,14 @@ class Rank_model(models.Model):
                 }
                 # Create a record with the dictionary
                 self.create(vals)
+        record = self.search([], limit=5)
+        var = {}
+        for i, row in enumerate(record):
+            # tambahkan key-value pair dengan format 'nama{i}':nama
+            var[f'name{i+1}'] = row.name
+            # tambahkan key-value pair dengan format 'nilai{i}':nilai
+            var[f'value{i+1}'] = row.ratio
+        self.env['x_my_model'].create(var)
 
     def action_rank(self):
         # kembalikan action yang sudah didefinisikan di views xml
