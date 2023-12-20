@@ -68,5 +68,5 @@
         <field name="view_mode">kanban,tree,form</field>  <!-- Tambahkan kanban di sini -->
     </record>
 
-    <menuitem id="menu_model" name="Model" action="action_my_model"/>
+    <menuitem id="menu_model" name="Log Student Achievement DSS" action="action_my_model"/>
 </odoo>
