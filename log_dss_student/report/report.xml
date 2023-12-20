@@ -6,6 +6,5 @@
         report_type="qweb-pdf"
         name="log_dss_student.x_my_model_report_template"
         file="log_dss_student.x_my_model_report_template"
-        print_report_name="(object.name)"
     />
 </odoo>

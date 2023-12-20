@@ -1,13 +1,44 @@
 <odoo>
     <template id="log_dss_student.x_my_model_report_template">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <div class="page">
-                    <h2><t t-esc="doc.name"/></h2>
-                    <p><t t-esc="doc.value"/></p>
-                    <!-- Tambahkan field lainnya di sini -->
+            <div class="page">
+                <div style="text-align: center;">
+                    <h1>Daftar Mahasiswa Berprestasi</h1>
+                    <h3><t t-esc="time.strftime('%B %Y')"/></h3>
                 </div>
-            </t>
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Nama Mahasiswa</th>
+                            <th>Nilai Prestasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as="doc">
+                            <tr>
+                                <td><t t-esc="doc.name1"/></td>
+                                <td><t t-esc="doc.value1"/></td>
+                            </tr>
+                            <tr>
+                                <td><t t-esc="doc.name2"/></td>
+                                <td><t t-esc="doc.value2"/></td>
+                            </tr>
+                            <tr>
+                                <td><t t-esc="doc.name3"/></td>
+                                <td><t t-esc="doc.value3"/></td>
+                            </tr>
+                            <tr>
+                                <td><t t-esc="doc.name4"/></td>
+                                <td><t t-esc="doc.value4"/></td>
+                            </tr>
+                            <tr>
+                                <td><t t-esc="doc.name5"/></td>
+                                <td><t t-esc="doc.value5"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
         </t>
     </template>
 </odoo>
