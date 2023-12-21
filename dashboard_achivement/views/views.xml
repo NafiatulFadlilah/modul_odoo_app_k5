@@ -62,7 +62,7 @@
 <record id="dashboard_refresh_class" model="ir.ui.view">
         <field name="name">student.achievement.tree.inherit</field>
         <field name="model">student.achievement</field>
-        <field name="inherit_id" ref="my_module_dashboard.view_student_achievement_tree"/>
+        <field name="inherit_id" ref="dashboard_achivement.view_student_achievement_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
                 <attribute name="js_class">refresh_button</attribute>
@@ -72,5 +72,5 @@
 
 
     <!-- Menu item to access the list view -->
-    <menuitem id="menu_student_achievements" name="Student Achievements" action="action_student_achievements"/>
+    <menuitem id="menu_student_achievements" name="Student Achievements Dashboard" action="action_student_achievements"/>
 </odoo>

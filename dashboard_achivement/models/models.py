@@ -29,7 +29,7 @@ class WizardRefresh(models.TransientModel):
 
 class StudentAchievement(models.Model):
     _name = 'student.achievement'
-    _description = 'Student Achievement'
+    _description = 'Student Achievement Dashboard'
 
     name = fields.Char(string='Student Name', required=True)
     nlratio = fields.Float(string='Nilai Ratio')
