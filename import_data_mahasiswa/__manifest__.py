@@ -1,5 +1,5 @@
 {
-    "name": "Import Data Mahasiswa",
+    "name": "EduFun - Import Data Mahasiswa",
     "version": "1.0.1",
     "category": "Tools",
     "author": "Ibnu Tsalis Assalam",

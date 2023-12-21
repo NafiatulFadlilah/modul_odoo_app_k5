@@ -1,5 +1,5 @@
 {
-    'name': 'Student Achievements Dashboard',
+    'name': 'EduFun - Student Achievements Dashboard',
     'version': '1.0',
     'category': 'Education',
     'summary': 'Dashboard for Student Achievements',

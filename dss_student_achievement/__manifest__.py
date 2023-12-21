@@ -1,5 +1,5 @@
 {
-    "name": "Student Achievement Decision Support System ",
+    "name": "EduFun - Student Achievement Decision Support System ",
     "version": "1.0.0",
     "category": "Tools",
     "author": "Nafiatul Fadlilah",

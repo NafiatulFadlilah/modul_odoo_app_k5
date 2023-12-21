@@ -1,5 +1,5 @@
 {
-    'name': "Log DSS Student",
+    'name': "EduFun - Log DSS Student",
     'version': '1.0',
     'depends': ['base'],
     'author': "Muhammad Helmi Permana Agung",
